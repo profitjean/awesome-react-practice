@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <div id="root"></div>
-  </body>
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="text/babel">
-    // HTML 태그와 동일하게 element 이름 지정해야한다
-    function Btn({ text, changeValue }) {
-      console.log(text, "was rendered");
-      return (
-        <button
-          onClick={changeValue}
-          style={{
-            backgroundColor: "tomato",
-            color: "white",
-            padding: "10px 20px",
-            borderRadius: 10,
-            border: 0,
-            fontSize: 16,
-          }}
-        >
-          {text}
-        </button>
-      );
-    }
-
-    const MemorizedBtn = React.memo(Btn);
-    function App() {
-      const [value, setValue] = React.useState("Save Changes");
-      const changeValue = () => setValue("Revert Changes");
-      return (
-        <div>
-          <MemorizedBtn text={value} changeValue={changeValue} />
-          <MemorizedBtn text="continue" />
-        </div>
-      );
-    }
-    const root = document.getElementById("root");
-    ReactDOM.render(<App />, root);
-  </script>
+    <body>
+        <div id="root"></div>
+    </body>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.development.js""></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/prop-types@15.7.2/prop-types.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        // HTML 태그와 동일하게 element 이름 지정해야한다
+        function Btn({ text, fontSize=12 }) {
+            console.log(text, "was rendered");
+            return (
+                <button
+                    style={{
+                        backgroundColor: "tomato",
+                        color: "white",
+                        padding: "10px 20px",
+                        borderRadius: 10,
+                        border: 0,
+                        fontSize,
+                    }}
+                >
+                    {text}
+                </button>
+            );
+        }
+        Btn.propTypes = {
+            text: PropTypes.string.isRequired,
+            fontSize: PropTypes.number,
+        };
+        function App() {
+            return (
+                <div>
+                    <Btn text="save changes" fontSize={18} />
+                    <Btn text={"sss"} />
+                </div>
+            );
+        }
+        const root = document.getElementById("root");
+        ReactDOM.render(<App />, root);
+    </script>
 </html>
