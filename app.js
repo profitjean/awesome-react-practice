@@ -6,3 +6,5 @@ function calculateAge(ageOfForeigner) {
 
 const krAge = calculateAge(age);
 console.log(krAge);
+
+// gitlab 연동테스트
