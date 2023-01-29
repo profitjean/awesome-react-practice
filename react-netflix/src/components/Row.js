@@ -1,8 +1,11 @@
 import axios from '../api/axios';
 import React, { useEffect, useState } from 'react';
 import './Row.css';
+import MovieModal from './MovieModal';
 export default function Row({ isLargeRow, fetchUrl, id, title }) {
   const [movies, setMovies] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [movieSelected, setmovieSelected] = useState({});
   useEffect(() => {
     fetchMovieData();
   }, [fetchUrl]);
@@ -13,12 +16,22 @@ export default function Row({ isLargeRow, fetchUrl, id, title }) {
     setMovies(request.data.results);
   };
 
+  const handleClick = (movie) => {
+    setModalOpen(true);
+    setmovieSelected(movie);
+  };
   return (
     <section>
       <h2>{title}</h2>
       <div className="slider">
         <div className="slider__arrow-left">
-          <span className="arrow">{'<'}</span>
+          <span
+            className="arrow"
+            onclick={() => {
+              document.getElementById(id).scrollLeft -= window.innerWidth - 80;
+            }}>
+            {'<'}
+          </span>
         </div>
         <div id={id} className="row__posters">
           {movies.map((movie) => (
@@ -29,13 +42,22 @@ export default function Row({ isLargeRow, fetchUrl, id, title }) {
                 isLargeRow ? movie.poster_path : movie.backdrop_path
               } `}
               alt={movie.name}
+              onclick={() => handleClick(movie)}
             />
           ))}
         </div>
         <div className="slider__arrow-right">
-          <span className="arrow">{'>'}</span>
+          <span
+            className="arrow"
+            onClick={() => {
+              document.getElementById(id).scrollLeft += window.innerWidth - 80;
+            }}>
+            {'>'}
+          </span>
         </div>
       </div>
+
+      {modalOpen && <MovieModal {...movieSelected} setModalOpen={setModalOpen} />}
     </section>
   );
 }
